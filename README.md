@@ -1,2 +1,2 @@
 # dinheiro
-App mobile para controle de despesas desesnvolvido com React Native
+App mobile para controle de despesas desenvolvido com React Native
