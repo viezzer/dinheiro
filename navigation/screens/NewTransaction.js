@@ -15,7 +15,8 @@ import { Feather } from 'react-native-vector-icons';
 import dayjs from 'dayjs';
 import styles from '../../assets/styles/newTransactionStyles'
 
-const NewTransaction = () => {
+const NewTransaction = ({route}) => {
+  const {selectedCashier} = route.params;
   const [title, setTitle] = useState('');
   const [inputAmount, setInputAmount] = useState('');
   const [isExpense, setIsExpense] = useState(false);
@@ -38,15 +39,15 @@ const NewTransaction = () => {
         created_at: dayjs().format('DD/MM/YYYY').toString(),
       };
 
-      let transactionsString = await AsyncStorage.getItem('@transactions');
+      let transactionsString = await AsyncStorage.getItem(selectedCashier);
 
       if (transactionsString) {
         // console.log(transactionsString)
         let parsedTransactions = JSON.parse(transactionsString);
         parsedTransactions.push(transaction);
-        await AsyncStorage.setItem('@transactions', JSON.stringify(parsedTransactions));
+        await AsyncStorage.setItem(selectedCashier, JSON.stringify(parsedTransactions));
       } else {
-        await AsyncStorage.setItem('@transactions', `[${JSON.stringify(transaction)}]`);
+        await AsyncStorage.setItem(selectedCashier, `[${JSON.stringify(transaction)}]`);
       }
 
       setTitle('');
