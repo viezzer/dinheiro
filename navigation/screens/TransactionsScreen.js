@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import Loading from '../../components/Loading'
+import React, { useState } from 'react';
+import Loading from '../../components/Loading';
+import PopupMenu from'../../components/PopupMenu';
 import TransactionListItem from '../../components/TransactionListItem';
 import styles from '../../assets/styles/transactionsScreenStyle';
 import {
@@ -16,7 +17,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const TransactionsScreen = () => {
   const { navigate } = useNavigation();
   const [loading, setLoading] = useState(true);
+  const [selectedCashier, setSelectedCashier] = useState('@transactions-default');
   const [transactions, setTransactions] = useState(null);
+  const options = [
+    {
+        title: 'Novo Caixa',
+        icon: 'add-circle-outline',
+        action: () => navigate('Criar novo Caixa')
+    }
+]
 
   // useEffect(() => {
   //   console.log("O useEffect foi chamado!");
@@ -33,7 +42,8 @@ const TransactionsScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await AsyncStorage.getItem('@transactions');
+      const response = await AsyncStorage.getItem(selectedCashier);
+      // console.log(selectedCashier)
       setTransactions(JSON.parse(response));
     } catch (error) {
       Alert.alert('Ops', 'Não foi possível carregar as transações.');
@@ -42,17 +52,17 @@ const TransactionsScreen = () => {
       setLoading(false);
     }
   };
-
+  
   const handleDeleteTransaction = async (id) => {
     try {
       const transactionsWithoutDeletedOne = transactions.filter(
         (transaction) => transaction.id !== id
-      );
-      await AsyncStorage.setItem(
-        '@transactions',
-        JSON.stringify(transactionsWithoutDeletedOne)
-      );
-      fetchData();
+        );
+        await AsyncStorage.setItem(
+          selectedCashier,
+          JSON.stringify(transactionsWithoutDeletedOne)
+          );
+          fetchData();
     } catch (error) {
       console.log(error);
       Alert.alert('Ops', 'Não foi possível deletar esta transação');
@@ -65,22 +75,24 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
+      {/* Botões principais */}
       <View style={styles.topButtonsRow}>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={{...styles.button, borderColor: 'blue',}}
-          // onPress={() => navigate('Nova transação')}
-        >
-          <Feather name="inbox" color="blue" size={20} />
-          <Text style={{...styles.buttonText, color:'blue'}}>Trocar Caixa</Text>
-        </TouchableOpacity>
+        {/* Botão de nova transação */}
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.button}
-          onPress={() => navigate('Nova transação')}
+          onPress={() => navigate('Nova transação', {selectedCashier: selectedCashier})}
         >
           <Feather name="dollar-sign" color="#4caf50" size={20} />
           <Text style={styles.buttonText}>Nova transação</Text>
+        </TouchableOpacity>
+        {/* Botão de troca de caixa */}
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{...styles.button, borderColor: 'blue',}}
+        >
+          <PopupMenu options={options}/>
+          <Text style={{...styles.buttonText, color:'blue'}}>Caixa</Text>
         </TouchableOpacity>
       </View>
       
