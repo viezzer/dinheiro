@@ -1,96 +1,27 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Loading from '../../components/Loading'
 import TransactionListItem from '../../components/TransactionListItem';
+import styles from '../../assets/styles/transactionsScreenStyle';
 import {
   ScrollView,
   Text,
   View,
   Alert,
   TouchableOpacity,
-  StyleSheet,
 } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Feather } from 'react-native-vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    flexDirection: 'row',
-    height: 55,
-    paddingHorizontal: 16,
-    marginVertical: 16,
-    borderWidth: 1,
-    borderColor: '#4caf50',
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: 'green',
-    marginLeft: 8,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  balanceText: {
-    color: 'black',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 8,
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#d7d7d7',
-    padding: 16,
-    marginVertical: 16,
-    justifyContent: 'space-around',
-    width: '80%',
-    borderRadius: 8,
-  },
-  infoBox: {
-    flex: 1,
-    borderRightWidth: 1,
-    borderColor: '#bdbdbd',
-    alignItems: 'center',
-  },
-  infoLabel: {
-    color: 'black',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  infoValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  transactionText: {
-    color: 'black',
-    fontSize: 20,
-    fontWeight: 'bold',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#d7d7d7',
-    paddingBottom: 8,
-    marginTop: 8,
-    marginBottom: 10,
-    width: '100%',
-    textAlign: 'center',
-  },
-});
 
 const TransactionsScreen = () => {
   const { navigate } = useNavigation();
   const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   console.log("O useEffect foi chamado!");
+  //   fetchData();
+  // }, []);
   
   // O useFocusEffect é usado para re-executar a função fetchData sempre que a tela recebe foco
   useFocusEffect(
@@ -134,14 +65,25 @@ const TransactionsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={0.7}
-        style={styles.button}
-        onPress={() => navigate('Nova transação')}
-      >
-        <Feather name="dollar-sign" color="#4caf50" size={20} />
-        <Text style={styles.buttonText}>Nova transação</Text>
-      </TouchableOpacity>
+      <View style={styles.topButtonsRow}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{...styles.button, borderColor: 'blue',}}
+          // onPress={() => navigate('Nova transação')}
+        >
+          <Feather name="inbox" color="blue" size={20} />
+          <Text style={{...styles.buttonText, color:'blue'}}>Trocar Caixa</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.button}
+          onPress={() => navigate('Nova transação')}
+        >
+          <Feather name="dollar-sign" color="#4caf50" size={20} />
+          <Text style={styles.buttonText}>Nova transação</Text>
+        </TouchableOpacity>
+      </View>
+      
 
       <Text style={styles.balanceText}>SALDO ATUAL</Text>
       <Text style={{ ...styles.balanceText, color: 'black', fontSize: 36 }}>
