@@ -14,8 +14,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Feather } from 'react-native-vector-icons';
 import dayjs from 'dayjs';
 import styles from '../../assets/styles/newTransactionStyles'
+import { useNavigation } from '@react-navigation/native';
 
 const NewTransaction = ({route}) => {
+  const { navigate } = useNavigation();
   const {selectedCashier} = route.params;
   const [title, setTitle] = useState('');
   const [inputAmount, setInputAmount] = useState('');
@@ -54,7 +56,8 @@ const NewTransaction = ({route}) => {
       setInputAmount('');
 
       //substituir por pop up?
-      Alert.alert('Nova Transação', 'Transação criada com sucesso');
+      // Alert.alert('Nova Transação', 'Transação criada com sucesso');
+      navigate('Transações')
     } catch (error) {
       console.error(error);
       Alert.alert('Ops', 'Não foi possível criar a transação :(');
