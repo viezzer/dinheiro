@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Loading from '../../components/Loading';
 import PopupMenu from'../../components/PopupMenu';
 import TransactionListItem from '../../components/TransactionListItem';
@@ -19,18 +19,19 @@ const TransactionsScreen = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCashier, setSelectedCashier] = useState('@transactions-default');
   const [transactions, setTransactions] = useState(null);
-  const options = [
+  const defaultCashierOption = [
     {
-        title: 'Novo Caixa',
-        icon: 'add-circle-outline',
-        action: () => navigate('Criar novo Caixa')
+      title: 'Novo Caixa',
+      icon: 'add-circle-outline',
+      action: () => navigate('Criar novo Caixa')
     }
-]
+  ]
+  const [cashierOptions, setCashierOptions] = useState(defaultCashierOption)
 
-  // useEffect(() => {
-  //   console.log("O useEffect foi chamado!");
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    console.log("O useEffect foi chamado!");
+    fetchCashierOptions()
+  }, []);
   
   // O useFocusEffect é usado para re-executar a função fetchData sempre que a tela recebe foco
   useFocusEffect(
@@ -39,6 +40,24 @@ const TransactionsScreen = () => {
       fetchData();
     }, [])
   );
+
+  const fetchCashierOptions = async () => {
+    try {
+      const optionsString = await AsyncStorage.getItem('@cashiers');
+      if (optionsString) {
+        console.log(optionsString)
+        // transformar string em objeto json
+        setCashierOptions(JSON.parse(optionsString))
+      } else {
+        await AsyncStorage.setItem('@cashiers', `${JSON.stringify(defaultCashierOption)}`);
+        console.log(JSON.stringify(defaultCashierOption))
+      }
+    } catch (error) {
+      Alert.alert('Ops', 'Não foi possível carregar opções de caixa.');
+      console.error(error);
+    }
+
+  }
 
   const fetchData = async () => {
     try {
@@ -91,7 +110,7 @@ const TransactionsScreen = () => {
           activeOpacity={0.7}
           style={{...styles.button, borderColor: 'blue',}}
         >
-          <PopupMenu options={options}/>
+          <PopupMenu options={cashierOptions}/>
           <Text style={{...styles.buttonText, color:'blue'}}>Caixa</Text>
         </TouchableOpacity>
       </View>
