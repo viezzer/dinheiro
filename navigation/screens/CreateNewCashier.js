@@ -35,7 +35,7 @@ const CreateNewCashier = () => {
       const newCashier = {
         title: title,
         icon: selectedIcon,
-        action: () => setSelectedCashier('@transactions-'+title),
+        action: setSelectedCashier('@transactions-'+title),
       };
 
       let cashiersString = await AsyncStorage.getItem('@cashiers');
