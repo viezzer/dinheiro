@@ -7,12 +7,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // Screens
 import TransactionsScreen from './screens/TransactionsScreen';
 import NewTransactionScreen from './screens/NewTransaction';
+import CreateNewCashier from './screens/CreateNewCashier'
 import ExpenseScreen from './screens/ExpenseScreen';
 import CategoriesScreen from './screens/CategoriesScreen';
 
 //Screen names
 const transactionsName = "Transações";
 const newTransactionName = "Nova transação"
+const createNewCashier = "Criar novo Caixa"
 const categoriesName = "Categorias";
 const expenseName = "Despesas";
 
@@ -49,13 +51,8 @@ function MainContainer() {
           <Tab.Screen name={transactionsName} component={TransactionsScreen} />
           <Tab.Screen name={categoriesName} component={CategoriesScreen} />
           <Tab.Screen name={expenseName} component={ExpenseScreen} />
-          <Tab.Screen 
-            name={newTransactionName} 
-            component={NewTransactionScreen}
-            options={{
-              tabBarButton: () => null, // Isso oculta o botão da barra de navegação inferior para esta tela
-            }}
-        />
+          <Tab.Screen name={newTransactionName} component={NewTransactionScreen}/>
+          <Tab.Screen name={createNewCashier} component={CreateNewCashier}/>
   
         </Tab.Navigator>
       </NavigationContainer>
