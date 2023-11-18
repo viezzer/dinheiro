@@ -75,7 +75,7 @@ const TransactionsScreen = () => {
           <Text style={styles.buttonText}>Nova transação</Text>
         </TouchableOpacity>
         {/* Botão de troca de caixa */}
-        <PopupMenu/>
+        {/* <PopupMenu/> */}
       </View>
       
 

@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const NewTransaction = ({route}) => {
   const { navigate } = useNavigation();
-  const {selectedCashier} = route.params;
+  // const {selectedCashier} = route.params;
   const [title, setTitle] = useState('');
   const [inputAmount, setInputAmount] = useState('');
   const [isExpense, setIsExpense] = useState(false);
@@ -41,15 +41,15 @@ const NewTransaction = ({route}) => {
         created_at: dayjs().format('DD/MM/YYYY').toString(),
       };
 
-      let transactionsString = await AsyncStorage.getItem(selectedCashier);
+      let transactionsString = await AsyncStorage.getItem('@transactions-default');
 
       if (transactionsString) {
         // console.log(transactionsString)
         let parsedTransactions = JSON.parse(transactionsString);
-        parsedTransactions.push(transaction);
-        await AsyncStorage.setItem(selectedCashier, JSON.stringify(parsedTransactions));
+        parsedTransactions.unshift(transaction);
+        await AsyncStorage.setItem('@transactions-default', JSON.stringify(parsedTransactions));
       } else {
-        await AsyncStorage.setItem(selectedCashier, `[${JSON.stringify(transaction)}]`);
+        await AsyncStorage.setItem('@transactions-default', `[${JSON.stringify(transaction)}]`);
       }
 
       setTitle('');
@@ -67,7 +67,6 @@ const NewTransaction = ({route}) => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <BackButton />
         <Text style={styles.headerText}>Nova transação</Text>
         <Text style={styles.label}>Tipo da transação</Text>
         <View style={styles.switchContainer}>

@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start'
     },
     headerText: {
-      marginTop:30,
+      marginTop:0,
       color: 'black',
       fontWeight: 'bold',
       fontSize: 30,
