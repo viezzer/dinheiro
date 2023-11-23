@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import uuid from 'react-native-uuid';
-import BackButton from '../../components/BackButton'
+import CategoryPicker from '../../components/CategoryPicker'
 import {
   ScrollView,
   Text,
@@ -21,6 +21,7 @@ const NewTransaction = ({route}) => {
   // const {selectedCashier} = route.params;
   const [title, setTitle] = useState('');
   const [inputAmount, setInputAmount] = useState('');
+  const [category, setCategory] = useState('Default')
   const [isExpense, setIsExpense] = useState(false);
 
   async function handleCreateNewTransaction() {
@@ -102,6 +103,9 @@ const NewTransaction = ({route}) => {
           value={inputAmount}
           onChangeText={setInputAmount}
         />
+
+        <Text style={styles.label}>Categoria</Text>
+        <CategoryPicker/>
 
         <TouchableOpacity
           activeOpacity={0.7}
